@@ -1,0 +1,23 @@
+<?php
+
+namespace a8worx\Blogs\Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
+
+class BlogsDatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        Model::unguard();
+
+        // $this->call("OthersTableSeeder");
+        $this->call(BlogCategoriesLookupsDataTableSeeder::class);
+        $this->call(BlogTagsLookupsDataTableSeeder::class);
+    }
+}

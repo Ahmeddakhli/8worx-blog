@@ -1,0 +1,27 @@
+{
+    "name": "a8worx/blogs",
+    "description": "",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ahmed",
+            "email": "ahmedddakhli99@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "a8worx\\Blogs\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "a8worx\\Blogs\\BlogsServiceProvider"
+
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+    }
+}
