@@ -23,9 +23,8 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-    
-    }
-    ,
-    "version": "dev-main"
+    },
+    "version": "0.0.1"
+
 }
 
