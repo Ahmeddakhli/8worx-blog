@@ -1,6 +1,6 @@
 <?php
 
-namespace a8worx\Blogs\Models;
+namespace Modules\Blogs\Models;
 
 use App\Models\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,18 +9,16 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Wildside\Userstamps\Userstamps;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use a8worx\Languages\Models\Language;
+use Modules\Languages\Models\Language;
 use App;
-use Illuminate\Database\Eloquent\Model;
-use a8worx\Lookups\Models\Lookup;
-use a8worx\Users\Models\User;
+use Modules\Lookups\Models\Lookup;
+use Modules\Users\Models\User;
 use Illuminate\Support\Facades\Cache;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 
-class Blog extends Model implements HasMedia
+class Blog extends BaseModel implements HasMedia
 {
-    use SoftDeletes, SoftCascadeTrait, Userstamps, InteractsWithMedia, QueryCacheable;
-
+    use SoftDeletes, SoftCascadeTrait, LogsActivity, Userstamps, InteractsWithMedia, QueryCacheable;
 
     const CREATED_BY = 'created_by';
     const UPDATED_BY = 'updated_by';
@@ -56,7 +54,7 @@ class Blog extends Model implements HasMedia
      */
     protected function getUserClass()
     {
-        return "a8worx\Users\Models\User";
+        return "Modules\Users\Models\User";
     }
 
     protected $table = 'blogs';
@@ -78,7 +76,7 @@ class Blog extends Model implements HasMedia
 
     // protected $softCascade = ['translations'];
     // Deleting translations manually to overcome laravel issue with composite primary key
-    protected $softCascade = [];
+    protected $softCascade = ['comments'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -96,9 +94,82 @@ class Blog extends Model implements HasMedia
     protected static $logName = 'blog_log';
     protected $language_id;
 
+    public function __construct(array $attributes = [])
+    {
+        $this->language_id = $this->getLanguageId();
+        parent::__construct($attributes);
+    }
 
 
-  
+    public function trans()
+    {
+        return $this->hasMany(BlogTranslation::class, 'blog_id');
+    }
+
+    public function translation()
+    {
+        return $this->trans()->where('language_id',  $this->language_id);
+    }
+
+    public function getTitleAttribute()
+    {
+        return optional($this->translation()->first())->title;
+    }
+
+    public function getSubTitleAttribute()
+    {
+        return optional($this->translation()->first())->sub_title;
+    }
+
+    public function getSlugAttribute()
+    {
+        return optional($this->translation()->first())->slug;
+    }
+
+    public function getShortDescriptionAttribute()
+    {
+        return optional($this->translation()->first())->short_description;
+    }
+
+    public function getDescriptionAttribute()
+    {
+        return optional($this->translation()->first())->description;
+    }
+
+    public function getMetaTitleAttribute()
+    {
+        return optional($this->translation->first())->meta_title;
+    }
+
+    public function getMetaDescriptionAttribute()
+    {
+        return optional($this->translation->first())->meta_description;
+    }
+
+    public function mediaType()
+    {
+        return $this->belongsTo(Lookup::class, 'media_type_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Lookup::class, 'category_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Lookup::class, 'blog_tags', 'blog_id', 'tag_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 
     // public function blog()
     // {
@@ -155,5 +226,9 @@ class Blog extends Model implements HasMedia
             Cache::forget('blogs_module_blogs_sections_en');
         });
 
+        static::restored(function () {
+            Cache::forget('blogs_module_blogs_sections_ar');
+            Cache::forget('blogs_module_blogs_sections_en');
+        });
     }
 }

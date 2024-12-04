@@ -43,7 +43,7 @@ class StoreBlogRequest extends FormRequest
         $array = array();
         // Translations
         $array['trans'] = 'required|array';
-        $array['trans.*.language_id'] = "required|exists:languages,id";
+        // $array['trans.*.language_id'] = "required|exists:languages,id";
         $array['trans.*.title'] = "required|string|max:191";
         $array['trans.*.description'] = "required|string|max:4294967295";
         $array['trans.*.slug'] = 'nullable|string|max:255|unique:blog_trans,slug,Null,id,deleted_at,NULL';
@@ -62,8 +62,8 @@ class StoreBlogRequest extends FormRequest
         $array['is_published'] = 'nullable|boolean';
         $array['is_show_creator'] = 'nullable|boolean';
         $array['is_show_date'] = 'nullable|boolean';
-        $array['tag_ids'] = "nullable|exists:lookups,id,deleted_at,NULL";
-        $array['category_id'] = "nullable|exists:lookups,id,deleted_at,NULL";
+        // $array['tag_ids'] = "nullable|exists:lookups,id,deleted_at,NULL";
+        // $array['category_id'] = "nullable|exists:lookups,id,deleted_at,NULL";
         $array['start_date'] = 'nullable|date|before:end_date';
         $array['end_date'] = 'nullable|date|after:start_date';
         $array['order'] =['required', 'integer', 'min:0'];

@@ -149,8 +149,6 @@ class BlogsController extends Controller
      */
     public function show($id)
     {
-        return "    all blogs";
-
         // Get the blog by ID
         $blog = $this->getBlogByIdAction->execute($id);
 
@@ -171,13 +169,11 @@ class BlogsController extends Controller
      */
     public function index(Request $request)
     {
-        dd( "kjj    ");
-        return "    all blogs";
         // Get the list of blogs
-        // $blogs = $this->getBlogsAction->execute($request);
+        $blogs = $this->getBlogsAction->execute($request);
 
         // Return the response
-        // return $this->successResponse(null, $blogs);
+        return $this->successResponse(null, $blogs);
     }
 
     /**

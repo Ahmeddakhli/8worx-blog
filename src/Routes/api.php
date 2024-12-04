@@ -18,19 +18,18 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => []], function () {
         Route::group(['prefix' => 'blogs'], function () {
 
-            Route::get('/ahmed', function () {
-                return " view('welcome')";
-            });
-            // Route::post('index', 'BlogsController@index');
-            // Route::resource('blogs', BlogsController::class);
+            Route::post('ahmed99', 'a8worx\Blogs\Http\Controllers\V1\BlogsController@index');
+
+            Route::post('index', 'a8worx\Blogs\Http\Controllers\V1\BlogsController@index');
+            Route::resource('blogs', a8worx\Blogs\Http\Controllers\V1\BlogsController::class);
 
             Route::group(['middleware' => ['auth:api']], function () {
-                // Route::resource('blogs', BlogsController::class);
+                // Route::resource('blogs', a8worx\Blogs\Http\Controllers\V1\BlogsController::class);
             });
 
             Route::group(['prefix' => 'front'], function () {
                 Route::get('index', 'a8worx\Blogs\Http\Controllers\V1\BlogsController@indexFront');
-                // Route::resource('blogs', BlogsController::class)->only(['show']);
+                // Route::resource('blogs', a8worx\Blogs\Http\Controllers\V1\BlogsController::class)->only(['show']);
             });
         });
     });
@@ -42,9 +41,9 @@ Route::group(['prefix' => 'v1'], function () {
     // });
     // Route::group(['middleware' => ['localization']], function () {
     //     Route::group(['prefix' => 'comments'], function () {
-    //         Route::get('homeBlogs', 'BlogsController@index');
-    //         Route::get('front/all', 'BlogsController@indexFront');
-    //         Route::get('show', 'BlogsController@show');
+    //         Route::get('homeBlogs', 'a8worx\Blogs\Http\Controllers\V1\BlogsController@index');
+    //         Route::get('front/all', 'a8worx\Blogs\Http\Controllers\V1\BlogsController@indexFront');
+    //         Route::get('show', 'a8worx\Blogs\Http\Controllers\V1\BlogsController@show');
     //     });
     // });
 });

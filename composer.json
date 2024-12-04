@@ -16,12 +16,16 @@
     "extra": {
         "laravel": {
             "providers": [
-                "a8worx\\Blogs\\BlogsServiceProvider"
-
+                "a8worx\\Blogs\\src\\Providers\\BlogsServiceProvider"
             ]
         }
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
+    
     }
+    ,
+    "version": "dev-main"
 }
+
